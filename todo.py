@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# Title: Todo-App
+# Description: Lets you add and manage stuffs you do directly on the terminal
+# Author: 
+# Date: 2022-01-28
+# Version: 2022.v1.3
+
 import typer
 from rich.console import Console
 from rich.table import Table
@@ -9,40 +15,40 @@ from database import get_all_todos, delete_todo, insert_todo, complete_todo, upd
 console = Console()
 app = typer.Typer()
 
-@app.command(short_help="adds an item")
+@app.command(short_help="Add a task to the list.")
 def add(task: str, category: str):
 	typer.echo(f"Adding {task}, {category}")
 	todo = Todo(task, category)
 	insert_todo(todo)
 	show()
 
-@app.command(short_help="deletes an item")
+@app.command(short_help="Delete a task from the list.")
 def delete(position: int):
 	typer.echo(f"Deleting {position}")
 	# Indices in UI begin at 1 while in database at 0
 	delete_todo(position-1)
 	show()
 
-@app.command(short_help="updates the database")
+@app.command(short_help="Update the database.")
 def update(position: int, task: str = None, category: str = None):
 	typer.echo(f"Updating {position}")
 	update_todo(position-1, task, category)
 	show()
 
-@app.command(short_help="completes a task")
+@app.command(short_help="Complete a task and mark it.")
 def complete(position: int):
 	typer.echo(f"Complete {position}")
 	complete_todo(position-1)
 	show()
 
-@app.command()
+@app.command(short_help="Print all tasks.")
 def show():
 	tasks = get_all_todos()
 	console.print("[bold magenta]Todos[/bold magenta]!", "💻")
 
 	table = Table(show_header=True, header_style="bold blue")
 	table.add_column("#", style="dim", width=6)
-	table.add_column("Todo", min_width=20)
+	table.add_column("Task", min_width=20)
 	table.add_column("Category", min_width=12, justify="right")
 	table.add_column("Done", min_width=12, justify="right")
 
