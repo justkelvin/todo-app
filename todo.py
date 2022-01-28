@@ -20,19 +20,19 @@ def add(task: str, category: str):
 def delete(position: int):
 	typer.echo(f"Deleting {position}")
 	# Indices in UI begin at 1 while in database at 0
-	delete_todo(position - 1)
+	delete_todo(position-1)
 	show()
 
 @app.command(short_help="updates the database")
 def update(position: int, task: str = None, category: str = None):
 	typer.echo(f"Updating {position}")
-	update_todo(position - 1, task, category)
+	update_todo(position-1, task, category)
 	show()
 
 @app.command(short_help="completes a task")
 def complete(position: int):
 	typer.echo(f"Complete {position}")
-	complete_todo(position -1)
+	complete_todo(position-1)
 	show()
 
 @app.command()
