@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sqlite3
 from typing import List
 from datetime import datetime
@@ -7,7 +9,7 @@ conn = sqlite3.connect('todos.db')
 c = conn.cursor()
 
 def create_table():
-    """Create a table in the database"""
+    '''Create the sqlite table to store tasks.'''
     c.execute("""CREATE TABLE IF NOT EXISTS todos (
         task text,
         category text,
@@ -20,6 +22,7 @@ def create_table():
 create_table()
 
 def insert_todo(todo: Todo):
+    '''Insert data to the database'''
     c.execute('select count(*) FROM todos')
     count = c.fetchone()[0]
     todo.position = count if count else 0
@@ -30,6 +33,7 @@ def insert_todo(todo: Todo):
                    'status': todo.status, 'position': todo.position})
 
 def get_all_todos() -> List[Todo]:
+    '''Fetch all data from the databse and return it as a list'''
     c.execute('select * from todos')
     results = c.fetchall()
     todos = []
@@ -39,6 +43,7 @@ def get_all_todos() -> List[Todo]:
     return todos
 
 def delete_todo(position):
+    '''Delete a task by its position'''
     c.execute('select count(*) from todos')
     count = c.fetchone()[0]
 
@@ -68,6 +73,7 @@ def update_todo(position: int, task: str, category: str):
                       {'position': position, 'category': category})
 
 def complete_todo(position: int):
+    '''A task is marked complete'''
     with conn:
         c.execute('UPDATE todos SET status = 2, date_completed = :date_completed WHERE position = :position',
                   {'position': position, 'date_completed': datetime.now().isoformat()})

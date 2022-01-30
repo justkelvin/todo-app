@@ -53,6 +53,7 @@ def show():
 	table.add_column("Done", min_width=12, justify="right")
 
 	def get_category_color(category):
+		'''Return a color from a predifined set, you can add more below'''
 		COLORS = {'Learn': 'Cyan', 'YouTube': 'red', 'Sports': 'cyan', 'Study': 'green'}
 		if category in COLORS:
 			return COLORS[category]
